@@ -1,39 +1,45 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+import { AppHeader } from '@/components/layout/Header';
+import { StyleSheet, View } from 'react-native'; // Import View
+import { ThemeProvider } from '@/contexts/ThemeContext';
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
+    // Outer container with black background
+    <ThemeProvider>
+      <View style={styles.outerContainer}>
+        {/* Removed ImageBackground from layout, now handled per page */}
+        <Stack
+          screenOptions={{
+            headerShown: false, // Hide default header, we use custom
+            contentStyle: { backgroundColor: '#18181b' }, // Use a solid background color (dark)
+          }}
+        >
+          <Stack.Screen
+            name="index"
+            options={{
+              headerShown: true,
+              header: () => <AppHeader />, // Use the custom header component
+            }}
+          />
+          <Stack.Screen
+            name="logo/[id]"
+            options={{
+              headerShown: true,
+              header: () => <AppHeader />, // Use the custom header component
+              animation: 'slide_from_right',
+            }}
+          />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+      </View>
     </ThemeProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  outerContainer: {
+    flex: 1,
+    backgroundColor: 'black', // Set the base background color to black
+  },
+});
