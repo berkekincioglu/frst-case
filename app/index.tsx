@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import { PromptInput } from '@/components/create-logo/PromptInput';
 import { LogoStylesSelector } from '@/components/create-logo/LogoStylesSelector';
@@ -7,6 +7,7 @@ import { CreateButton } from '@/components/create-logo/CreateButton';
 import { StatusChip, StatusType } from '@/components/create-logo/StatusChip';
 import { s } from '@/utils/responsive';
 import { PageBackground } from '@/components/layout/PageBackground';
+import { TestHelloFunction } from '@/components/create-logo/TestHelloFunction';
 
 const MOCK_LOGO_URL = 'https://placehold.co/80x80/png';
 
@@ -59,6 +60,7 @@ export default function CreateLogoPage() {
           />
           <PromptInput value={prompt} onChangeText={setPrompt} />
           <LogoStylesSelector selected={selectedStyle} onSelect={setSelectedStyle} />
+          <TestHelloFunction />
           <CreateButton onPress={handleCreate} loading={loading} />
         </View>
       </KeyboardAvoidingView>

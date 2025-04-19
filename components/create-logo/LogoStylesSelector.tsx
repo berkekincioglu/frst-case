@@ -1,13 +1,21 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
+import { getFunctions, httpsCallable } from 'firebase/functions';
+import { app, functions } from '@/config/firebase';
+import { useAuth } from '@/contexts/AuthContext';
 
-const MOCK_STYLES = [
-  { key: 'none', label: 'No Style', icon: null },
-  { key: 'monogram', label: 'Monogram', icon: null },
-  { key: 'abstract', label: 'Abstract', icon: null },
-  { key: 'mascot', label: 'Mascot', icon: null },
-  { key: 'emblem', label: 'Emblem', icon: null },
-];
+interface LogoStyle {
+  key: string;
+  label: string;
+  icon: any; // Replace with appropriate type for icon
+}
 
 export function LogoStylesSelector({
   selected,
@@ -16,11 +24,42 @@ export function LogoStylesSelector({
   selected: string;
   onSelect: (key: string) => void;
 }) {
+  const [stylesList, setStylesList] = useState<LogoStyle[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const getLogoStyles = httpsCallable(functions, 'getLogoStyles');
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (!user) {
+      console.error('User not authenticated');
+      return;
+    }
+    const fetchStyles = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await getLogoStyles();
+        const styles = response.data as LogoStyle[];
+        setStylesList(styles);
+      } catch (err) {
+        console.error('Error fetching logo styles:', err);
+        setError('Failed to load logo styles');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStyles();
+  }, [user]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Logo Styles</Text>
+
+      {error && <Text style={{ color: 'red', marginVertical: 16 }}>{error}</Text>}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scroll}>
-        {MOCK_STYLES.map(style => (
+        {stylesList.map(style => (
           <TouchableOpacity
             key={style.key}
             style={[styles.styleItem, selected === style.key && styles.selectedStyle]}
