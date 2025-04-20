@@ -1,10 +1,33 @@
 import { AuthProvider } from '@/contexts/AuthContext';
 import { Stack } from 'expo-router';
-import { AppHeader } from '@/components/layout/Header';
-import { StyleSheet, View } from 'react-native'; // Import View
+import { AppHeader } from '@/components/create-logo/Header';
+import { StyleSheet, View } from 'react-native';
 import { ThemeProvider } from '@/contexts/ThemeContext';
+import * as SplashScreen from 'expo-splash-screen';
+import { useEffect } from 'react';
+import { useFonts } from 'expo-font';
+
+SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const [loaded, error] = useFonts({
+    'Manrope-Regular': require('@/assets/fonts/Manrope-Regular.ttf'),
+    'Manrope-Bold': require('@/assets/fonts/Manrope-Bold.ttf'),
+    'Manrope-Medium': require('@/assets/fonts/Manrope-Medium.ttf'),
+    'Manrope-ExtraBold': require('@/assets/fonts/Manrope-ExtraBold.ttf'),
+    'Manrope-ExtraLight': require('@/assets/fonts/Manrope-ExtraLight.ttf'),
+    'Manrope-Light': require('@/assets/fonts/Manrope-Light.ttf'),
+  });
+
+  useEffect(() => {
+    if (loaded || error) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded, error]);
+
+  if (!loaded && !error) {
+    return null;
+  }
   return (
     <AuthProvider>
       <ThemeProvider>
@@ -19,16 +42,13 @@ export default function RootLayout() {
             <Stack.Screen
               name="index"
               options={{
-                headerShown: true,
-                header: () => <AppHeader />, // Use the custom header component
+                headerShown: false,
               }}
             />
             <Stack.Screen
               name="logo/[id]"
               options={{
-                headerShown: true,
-                header: () => <AppHeader />, // Use the custom header component
-                animation: 'slide_from_right',
+                headerShown: false,
               }}
             />
             <Stack.Screen name="+not-found" />

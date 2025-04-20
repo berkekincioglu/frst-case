@@ -4,16 +4,22 @@ import { TextStyle, ViewStyle } from 'react-native';
 export type ThemeMode = 'light' | 'dark' | 'system';
 
 export interface ThemeColors {
-  background: string;
-  surface: string;
-  primary: string;
-  secondary: string;
-  error: string;
-  text: string;
-  textSecondary: string;
-  border: string;
-  disabled: string;
-  card: string;
+  white: string;
+  white100: string;
+  white1000: string;
+  dark100: string;
+  dark300: string;
+  dark500: string;
+  dark1000: string;
+  dark2000: string;
+  purple1000: string;
+  purple1000_05: string;
+  darkBlue: string;
+  darkBlue1000: string;
+  darkBlue1000_05: string;
+  red1000: string;
+  purple700: string;
+  purple600: string;
 }
 
 export interface ThemeSpacing {

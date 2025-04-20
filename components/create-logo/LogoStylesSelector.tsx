@@ -11,6 +11,8 @@ import {
 
 import { useAuth } from '@/contexts/AuthContext';
 import { GET_LOGO_STYLES_URL } from '@/utils/api';
+import { s } from '@/utils/responsive';
+import { useTheme } from '@/hooks/useTheme';
 
 interface LogoStyle {
   key: string;
@@ -29,13 +31,13 @@ export function LogoStylesSelector({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
+  const { theme } = useTheme();
 
   const logoImages: Record<string, any> = {
     abstract: require('../../assets/images/logos/abstract.png'),
     mascot: require('../../assets/images/logos/mascot.png'),
     monogram: require('../../assets/images/logos/monogram.png'),
     'no-logo': require('../../assets/images/logos/no-logo.png'),
-    // Add all your logo keys here
   };
 
   useEffect(() => {
@@ -51,12 +53,11 @@ export function LogoStylesSelector({
           throw new Error('Invalid data format');
         }
 
-        // const styles = response.data as LogoStyle[];
         setStylesList(styles =>
           data.map((style: LogoStyle) => ({
             key: style.key,
             label: style.label,
-            url: style.url, // Assuming icon is a valid property
+            url: style.url,
           }))
         );
       } catch (err) {
@@ -67,47 +68,66 @@ export function LogoStylesSelector({
       }
     };
 
-    // const handleCall = async () => {
-    //   setLoading(true);
-    //   setError(null);
-    //   setResult(null);
-    //   try {
-    //     const response = await fetch(HELLO_WORLD_URL);
-    //     if (!response.ok) throw new Error('Network response was not ok');
-    //     const text = await response.text();
-    //     setResult(text);
-    //   } catch (err: any) {
-    //     setError(err.message || 'Error calling function');
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-
     fetchStyles();
   }, [user]);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Logo Styles</Text>
+      <Text
+        style={{
+          ...theme.typography.heading,
+          color: theme.colors.white100,
+          fontSize: s(20),
+        }}
+      >
+        Logo Styles
+      </Text>
+      {loading && (
+        <View style={{ marginTop: s(12), alignItems: 'center' }}>
+          <ActivityIndicator color="white" />
+        </View>
+      )}
 
-      {error && <Text style={{ color: 'red', marginVertical: 16 }}>{error}</Text>}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scroll}>
         {stylesList.map(logo => (
           <TouchableOpacity
             key={logo.key}
-            style={[styles.styleItem, selected === logo.key && styles.selectedStyle]}
-            onPress={() => onSelect(logo.key)}
+            style={[styles.styleItem]}
+            onPress={() => onSelect(logo.label)}
             activeOpacity={0.7}
           >
             {/* Display logo image if url exists, otherwise fallback */}
             {logo.url ? (
               <View style={{ marginBottom: 8 }}>
-                <Image source={logoImages[logo.url]} style={styles.logoImg} resizeMode="contain" />
+                <Image
+                  source={logoImages[logo.url]}
+                  style={[
+                    {
+                      width: s(90),
+                      height: s(90),
+                      borderRadius: 16,
+                    },
+                    selected === logo.label ? styles.selectedStyle : {},
+                  ]}
+                  resizeMode="contain"
+                />
               </View>
             ) : (
               <View style={styles.iconPlaceholder} />
             )}
-            <Text style={styles.styleLabel}>{logo.label}</Text>
+            <Text
+              style={[
+                {
+                  ...theme.typography.body,
+                  fontSize: s(13),
+                },
+                selected === logo.label
+                  ? { ...styles.styleLabel, color: theme.colors.white100 }
+                  : { ...styles.styleLabel, color: theme.colors.dark500 },
+              ]}
+            >
+              {logo.label}
+            </Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -116,28 +136,22 @@ export function LogoStylesSelector({
 }
 
 const styles = StyleSheet.create({
-  container: {},
-  title: {
-    fontWeight: 'bold',
-    fontSize: 18,
-    marginBottom: 12,
-    color: 'white',
+  container: {
+    paddingLeft: s(24),
   },
+
   scroll: {
     flexGrow: 0,
+    marginTop: s(12),
   },
   styleItem: {
     alignItems: 'center',
-    marginRight: 16,
-    borderWidth: 2,
-    borderColor: 'transparent',
+    marginRight: 8,
     borderRadius: 16,
-    padding: 12,
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    minWidth: 80,
   },
   selectedStyle: {
     borderColor: 'white',
+    borderWidth: 2,
   },
 
   styleLabel: {
@@ -146,16 +160,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   iconPlaceholder: {
-    width: 48,
-    height: 48,
+    width: s(90),
+    height: s(90),
     borderRadius: 12,
     backgroundColor: 'rgba(255,255,255,0.1)',
-    marginBottom: 8,
-  },
-  logoImg: {
-    width: 48,
-    height: 48,
-    borderRadius: 12,
     marginBottom: 8,
   },
 });

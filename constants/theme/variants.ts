@@ -3,16 +3,22 @@ import { Theme } from './types';
 export const lightTheme: Theme = {
   isDark: false,
   colors: {
-    background: '#FFFFFF', // white
-    surface: '#FAFAFA', // white100
-    primary: '#2938DC', // darkBlue
-    secondary: '#943DFF', // purple1000
-    error: '#EF4444', // red1000
-    text: '#18181B', // dark100
-    textSecondary: '#71717A', // dark500
-    border: '#E4E4E7', // white1000
-    disabled: '#D4D4D8', // dark300
-    card: '#FAFAFA', // white100
+    white: '#FFFFFF',
+    white100: '#FAFAFA',
+    white1000: '#E4E4E7',
+    dark100: '#18181B',
+    dark300: '#D4D4D8',
+    dark500: '#71717A',
+    dark1000: '#09090B',
+    dark2000: '#27272A',
+    purple1000: '#943DFF',
+    purple700: '#523AE9', // new
+    purple600: '#3B39E2', // new
+    purple1000_05: 'rgba(148, 61, 255, 0.05)',
+    darkBlue: '#2938DC',
+    darkBlue1000: '#282C57',
+    darkBlue1000_05: 'rgba(41, 56, 220, 0.05)',
+    red1000: '#EF4444',
   },
   spacing: {
     xs: 4,
@@ -36,19 +42,16 @@ export const lightTheme: Theme = {
       bold: '700',
     },
     heading: {
-      fontFamily: 'Manrope-Bold',
-      fontSize: 28,
-      fontWeight: '700',
+      fontFamily: 'Manrope-ExtraBold',
+      fontSize: 22,
     },
     body: {
       fontFamily: 'Manrope-Regular',
       fontSize: 16,
-      fontWeight: '400',
     },
     caption: {
       fontFamily: 'Manrope-Regular',
       fontSize: 12,
-      fontWeight: '400',
     },
   },
   shape: {
@@ -59,16 +62,22 @@ export const lightTheme: Theme = {
 export const darkTheme: Theme = {
   isDark: true,
   colors: {
-    background: '#18181B', // dark100
-    surface: '#27272A', // dark2000
-    primary: '#943DFF', // purple1000
-    secondary: '#2938DC', // darkBlue
-    error: '#EF4444', // red1000
-    text: '#FAFAFA', // white100
-    textSecondary: '#D4D4D8', // dark300
-    border: '#09090B', // dark1000
-    disabled: '#71717A', // dark500
-    card: '#27272A', // dark2000
+    white: '#FFFFFF',
+    white100: '#FAFAFA',
+    white1000: '#E4E4E7',
+    dark100: '#18181B',
+    dark300: '#D4D4D8',
+    dark500: '#71717A',
+    purple700: '#523AE9', // new
+    purple600: '#3B39E2', // new
+    dark1000: '#09090B',
+    dark2000: '#27272A',
+    purple1000: '#943DFF',
+    purple1000_05: 'rgba(148, 61, 255, 0.05)',
+    darkBlue: '#2938DC',
+    darkBlue1000: '#282C57',
+    darkBlue1000_05: 'rgba(41, 56, 220, 0.05)',
+    red1000: '#EF4444',
   },
   spacing: {
     xs: 4,

@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
+import { useState } from 'react';
+import { Keyboard, TouchableWithoutFeedback, StyleSheet, View } from 'react-native';
 import { PromptInput } from '@/components/create-logo/PromptInput';
 import { LogoStylesSelector } from '@/components/create-logo/LogoStylesSelector';
 import { CreateButton } from '@/components/create-logo/CreateButton';
@@ -8,10 +8,11 @@ import { StatusChip, StatusType } from '@/components/create-logo/StatusChip';
 import { s } from '@/utils/responsive';
 import { PageBackground } from '@/components/layout/PageBackground';
 import { GENERATE_LOGO_URL } from '@/utils/api';
+import { AppHeader } from '@/components/create-logo/Header';
 
 export default function CreateLogoPage() {
   const [prompt, setPrompt] = useState('');
-  const [selectedStyle, setSelectedStyle] = useState('none');
+  const [selectedStyle, setSelectedStyle] = useState('No Style');
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<StatusType>('pending');
   const [logoId, setLogoId] = useState<string | null>(null);
@@ -41,7 +42,6 @@ export default function CreateLogoPage() {
       setLoading(false);
     }
   };
-
   const handleStatusPress = () => {
     if (status === 'done' && logoId && logoData) {
       router.push({
@@ -55,23 +55,22 @@ export default function CreateLogoPage() {
 
   return (
     <PageBackground>
-      <KeyboardAvoidingView
-        style={styles.flex}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        keyboardVerticalOffset={80}
-      >
-        <View style={styles.container}>
-          <StatusChip
-            status={status}
-            onPress={handleStatusPress}
-            logoUrl={status === 'done' && logoData ? logoData.imageUrl : undefined}
-            eta="30-60 seconds"
-          />
-          <PromptInput value={prompt} onChangeText={setPrompt} />
-          <LogoStylesSelector selected={selectedStyle} onSelect={setSelectedStyle} />
-          <CreateButton onPress={handleCreate} loading={loading} />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <View style={styles.flex}>
+          <View style={styles.container}>
+            <AppHeader />
+            <StatusChip
+              status={status}
+              onPress={handleStatusPress}
+              logoUrl={status === 'done' && logoData ? logoData.imageUrl : undefined}
+              eta="30-60 seconds"
+            />
+            <PromptInput value={prompt} onChangeText={setPrompt} />
+            <LogoStylesSelector selected={selectedStyle} onSelect={setSelectedStyle} />
+            <CreateButton onPress={handleCreate} loading={loading} />
+          </View>
         </View>
-      </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     </PageBackground>
   );
 }

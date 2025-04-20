@@ -1,50 +1,107 @@
-# Welcome to your Expo app 👋
+# AI Logo Generator – Setup & Development Guide
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This project is a full-stack Expo (React Native) app with Firebase backend and local Cloud Functions for generating AI-powered logos.
 
-## Get started
+## Prerequisites
 
-1. Install dependencies
+- Node.js (v18+ recommended)
+- npm or yarn
+- [Expo CLI](https://docs.expo.dev/get-started/installation/)
+- [Firebase project](https://console.firebase.google.com/) with:
+  - Firestore Database enabled
+  - Authentication enabled (Anonymous sign-in must be allowed)
 
-   ```bash
-   npm install
-   ```
+## 1. Clone the Repository
 
-2. Start the app
-
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```sh
+git clone <your-repo-url>
+cd case-study
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 2. Set Up Environment Variables
 
-## Learn more
+1. Copy the example env file:
+   ```sh
+   cp .env.example .env
+   ```
+2. Fill in your Firebase credentials in `.env`:
+   - `EXPO_PUBLIC_FIREBASE_API_KEY`
+   - `EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN`
+   - `EXPO_PUBLIC_FIREBASE_PROJECT_ID`
+   - `EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET`
+   - `EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`
+   - `EXPO_PUBLIC_FIREBASE_APP_ID`
 
-To learn more about developing your project with Expo, look at the following resources:
+> **Note:** These values can be found in your Firebase project settings (Project Overview > Project settings > General > Your apps).
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## 3. Firebase Project Configuration
 
-## Join the community
+- **Authentication:**
+  - Go to Firebase Console > Authentication > Sign-in method
+  - Enable **Anonymous** sign-in
+- **Firestore:**
+  - Go to Firebase Console > Firestore Database
+  - Create a database (in test mode is fine for development)
 
-Join our community of developers creating universal apps.
+## 4. Install Dependencies
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### For the Expo App
+
+```sh
+npm install
+```
+
+### For Cloud Functions
+
+```sh
+cd functions
+npm install
+```
+
+## 5. Run Cloud Functions Locally
+
+From the `functions` directory:
+
+```sh
+npm run dev
+```
+
+- This will build and start the Firebase Functions emulator locally.
+- No need to deploy to Firebase for local development.
+
+## 6. Start the Expo App
+
+From the project root:
+
+```sh
+npm start
+```
+
+- This will launch the Expo development server.
+- You can run the app on an emulator, simulator, or a real device using the Expo Go app.
+
+## 7. Usage
+
+- Enter a prompt and select a logo style.
+- Click **Create** to generate a logo.
+- The app will communicate with your local Cloud Functions and Firestore.
+
+## Troubleshooting
+
+- **Unauthenticated Error:**
+  - Make sure Anonymous Auth is enabled in Firebase.
+  - Ensure your `.env` file has the correct Firebase credentials.
+- **Firestore Errors:**
+  - Make sure Firestore is enabled and in test mode for development.
+
+## Project Structure
+
+- `app/` – Expo app source code
+- `components/` – Reusable UI components
+- `functions/` – Firebase Cloud Functions (TypeScript)
+- `constants/` – Theme and config
+- `assets/` – Images and fonts
+
+---
+
+For any issues, please check the code comments or open an issue in the repository.
