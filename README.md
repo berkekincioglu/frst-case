@@ -1,5 +1,3 @@
-
-https://github.com/user-attachments/assets/00b2bd76-c459-489a-bc0e-e32fa5b0086b
 # AI Logo Generator – Setup & Development Guide
 
 This project is a full-stack Expo (React Native) app with Firebase backend and local Cloud Functions for generating AI-powered logos.
