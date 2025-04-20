@@ -1,11 +1,12 @@
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { useTheme } from '@/hooks/useTheme';
 import { PageBackground } from '@/components/layout/PageBackground';
 
 export default function LogoDetailPage() {
-  const { id } = useLocalSearchParams();
+  const { id, prompt, style, imageUrl } = useLocalSearchParams();
   const { theme } = useTheme();
+  const mockOutputImage = require('@/assets/images/output.png');
   return (
     <PageBackground>
       <View
@@ -24,8 +25,16 @@ export default function LogoDetailPage() {
             marginBottom: theme.spacing.md,
           }}
         >
-          Logo Detail Page
+          Your Logo
         </Text>
+        {imageUrl ? (
+          <Image
+            // source={{ uri: imageUrl as string  }}
+            source={imageUrl ? { uri: imageUrl as string } : mockOutputImage}
+            style={{ width: 180, height: 180, borderRadius: 24, marginBottom: theme.spacing.lg }}
+            resizeMode="contain"
+          />
+        ) : null}
         <Text
           style={{
             ...theme.typography.body,
@@ -33,10 +42,21 @@ export default function LogoDetailPage() {
             backgroundColor: theme.colors.card,
             padding: theme.spacing.sm,
             borderRadius: theme.shape.borderRadius,
+            marginBottom: theme.spacing.md,
           }}
         >
           ID: {id}
         </Text>
+        {prompt ? (
+          <Text style={{ ...theme.typography.body, color: theme.colors.text, marginBottom: 8 }}>
+            <Text style={{ fontWeight: 'bold' }}>Prompt:</Text> {prompt}
+          </Text>
+        ) : null}
+        {style ? (
+          <Text style={{ ...theme.typography.body, color: theme.colors.text }}>
+            <Text style={{ fontWeight: 'bold' }}>Style:</Text> {style}
+          </Text>
+        ) : null}
       </View>
     </PageBackground>
   );

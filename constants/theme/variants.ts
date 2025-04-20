@@ -3,16 +3,16 @@ import { Theme } from './types';
 export const lightTheme: Theme = {
   isDark: false,
   colors: {
-    background: '#FFFFFF',
-    surface: '#F7F7F7',
-    primary: '#2563eb',
-    secondary: '#64748b',
-    error: '#ef4444',
-    text: '#18181b',
-    textSecondary: '#52525b',
-    border: '#e5e7eb',
-    disabled: '#cbd5e1',
-    card: '#f1f5f9',
+    background: '#FFFFFF', // white
+    surface: '#FAFAFA', // white100
+    primary: '#2938DC', // darkBlue
+    secondary: '#943DFF', // purple1000
+    error: '#EF4444', // red1000
+    text: '#18181B', // dark100
+    textSecondary: '#71717A', // dark500
+    border: '#E4E4E7', // white1000
+    disabled: '#D4D4D8', // dark300
+    card: '#FAFAFA', // white100
   },
   spacing: {
     xs: 4,
@@ -59,16 +59,16 @@ export const lightTheme: Theme = {
 export const darkTheme: Theme = {
   isDark: true,
   colors: {
-    background: '#18181b',
-    surface: '#23232a',
-    primary: '#60a5fa',
-    secondary: '#94a3b8',
-    error: '#f87171',
-    text: '#f1f5f9',
-    textSecondary: '#a1a1aa',
-    border: '#27272a',
-    disabled: '#52525b',
-    card: '#27272a',
+    background: '#18181B', // dark100
+    surface: '#27272A', // dark2000
+    primary: '#943DFF', // purple1000
+    secondary: '#2938DC', // darkBlue
+    error: '#EF4444', // red1000
+    text: '#FAFAFA', // white100
+    textSecondary: '#D4D4D8', // dark300
+    border: '#09090B', // dark1000
+    disabled: '#71717A', // dark500
+    card: '#27272A', // dark2000
   },
   spacing: {
     xs: 4,

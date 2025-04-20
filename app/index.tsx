@@ -7,9 +7,7 @@ import { CreateButton } from '@/components/create-logo/CreateButton';
 import { StatusChip, StatusType } from '@/components/create-logo/StatusChip';
 import { s } from '@/utils/responsive';
 import { PageBackground } from '@/components/layout/PageBackground';
-import { TestHelloFunction } from '@/components/create-logo/TestHelloFunction';
-
-const MOCK_LOGO_URL = 'https://placehold.co/80x80/png';
+import { GENERATE_LOGO_URL } from '@/utils/api';
 
 export default function CreateLogoPage() {
   const [prompt, setPrompt] = useState('');
@@ -17,28 +15,39 @@ export default function CreateLogoPage() {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<StatusType>('pending');
   const [logoId, setLogoId] = useState<string | null>(null);
+  const [logoData, setLogoData] = useState<any>(null);
   const router = useRouter();
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
     setLoading(true);
     setStatus('processing');
-    // Simulate API call
-    setTimeout(() => {
-      // Randomly simulate error or success for demo
-      if (Math.random() < 0.2) {
-        setStatus('error');
-        setLoading(false);
-      } else {
-        setStatus('done');
-        setLogoId('123'); // mock id
-        setLoading(false);
-      }
-    }, 5000); // 60 seconds
+    setLogoId(null);
+    setLogoData(null);
+    try {
+      // Only call the API, backend handles delay
+      const res = await fetch(GENERATE_LOGO_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt, style: selectedStyle }),
+      });
+      if (!res.ok) throw new Error('Failed to generate logo');
+      const data = await res.json();
+      setStatus('done');
+      setLogoId(data.id);
+      setLogoData(data);
+    } catch (e) {
+      setStatus('error');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleStatusPress = () => {
-    if (status === 'done' && logoId) {
-      router.push(`/logo/${logoId}`);
+    if (status === 'done' && logoId && logoData) {
+      router.push({
+        pathname: '/logo/[id]',
+        params: { id: logoId, ...logoData },
+      });
     } else if (status === 'error') {
       setStatus('pending');
     }
@@ -55,12 +64,11 @@ export default function CreateLogoPage() {
           <StatusChip
             status={status}
             onPress={handleStatusPress}
-            logoUrl={status === 'done' ? MOCK_LOGO_URL : undefined}
-            eta="2 minutes"
+            logoUrl={status === 'done' && logoData ? logoData.imageUrl : undefined}
+            eta="30-60 seconds"
           />
           <PromptInput value={prompt} onChangeText={setPrompt} />
           <LogoStylesSelector selected={selectedStyle} onSelect={setSelectedStyle} />
-          <TestHelloFunction />
           <CreateButton onPress={handleCreate} loading={loading} />
         </View>
       </KeyboardAvoidingView>
