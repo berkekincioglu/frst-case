@@ -14,7 +14,7 @@ This project is a full-stack Expo (React Native) app with Firebase backend and l
 ## 1. Clone the Repository
 
 ```sh
-git clone <your-repo-url>
+git clone https://github.com/berkekincioglu/frst-case.git
 cd case-study
 ```
 
