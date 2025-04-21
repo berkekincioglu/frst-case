@@ -84,8 +84,8 @@ export const generateLogo = onRequest(async (request, response) => {
   }
 
   // Random delay
-  // const delayMs = 30_000 + Math.floor(Math.random() * 30_000);
-  const delayMs = 5000;
+   const delayMs = 30_000 + Math.floor(Math.random() * 30_000);
+  //const delayMs = 5000;
   logger.info(`Waiting ${delayMs}ms to simulate generation`);
   await new Promise(r => setTimeout(r, delayMs));
 
